@@ -1,0 +1,57 @@
+#include <bits/stdc++.h>
+using namespace std;
+
+string normalize(const string& text) {
+    string result;
+    for (char c : text) {
+        if (isalnum(c)) {
+            result += tolower(c);
+        }
+    }
+    return result;
+}
+
+string encode(const string& text) {
+    string s = normalize(text);
+    int L = s.size();
+
+    int r = floor(sqrt(L));
+    int c = ceil(sqrt(L));
+
+    if (r * c < L) r++;
+
+    // Construir matriz
+    vector<string> grid(r, string(c, ' '));
+    int idx = 0;
+
+    for (int i = 0; i < r; i++) {
+        for (int j = 0; j < c; j++) {
+            if (idx < L) {
+                grid[i][j] = s[idx++];
+            }
+        }
+    }
+
+    // Leer columnas
+    vector<string> result(c, "");
+
+    for (int j = 0; j < c; j++) {
+        for (int i = 0; i < r; i++) {
+            result[j] += grid[i][j];
+        }
+    }
+
+    // Unir con espacios
+    string encoded;
+    for (string& word : result) {
+        encoded += word + " ";
+    }
+
+    return encoded;
+}
+
+int main() {
+    string text = "If man was meant to stay on the ground, god would have given us roots.";
+    cout << encode(text) << endl;
+    return 0;
+}
